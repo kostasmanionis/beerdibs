@@ -54,7 +54,26 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract('css-loader?localIdentName=[name]__[local]__[hash:base64:5]!sass-loader!postcss-loader')
+                loader: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: [
+                        {
+                            loader: 'css-loader',
+                            query: {
+                                importLoaders: 2,
+                                localIdentName: '[name]__[local]__[hash:base64:5]'
+                            }
+                        },
+                        'postcss-loader',
+                        {
+                            loader: 'sass-loader',
+                            query: {
+                                outputStyle: 'expanded',
+                                includePaths: 'node_modules'
+                            }
+                        }
+                    ]
+                })
             }
         ]
     },
